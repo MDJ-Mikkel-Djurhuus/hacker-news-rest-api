@@ -1,44 +1,23 @@
 const express = require('express');
-const app = express();
+const cors = require('cors');
 const mysql = require('mysql');
-var sqlUtils = require("./sql/functions/sql-utils.js");
+const bodyParser = require('body-parser');
 
-const PORT = 3000;
-const HOST = "localhost";
+const index = require('./routes/index');
+const post = require('./routes/post');
+const user = require('./routes/user');
 
-var connection = mysql.createConnection({
-    host: HOST,
-    user: 'root',
-    password: 'admin',
-    database: 'hackernews'
-});
+const app = express();
 
-app.get('/post', function (req, res) {
-    sqlUtils.posts(connection, function (rows, fields) {
-        console.log("test", rows)
-        res.send(rows)
-    });
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use('/', index);
+app.use('/post', post);
+app.use('/user', user);
+
+app.listen(3000, function () {
 })
 
-app.get('/latest', function (req, res) {
-    sqlUtils.posts(connection, function (rows, fields) {
-        console.log("test", rows)
-        res.send(rows)
-    });
-})
-
-app.put('/post', function (req, res) {
-    sqlUtils.posts(connection, function (rows, fields) {
-        console.log("test", rows)
-        res.send(rows)
-    });
-})
-
-
-app.get('/status', function (req, res) {
-    // HANDLE STATUS
-})
-
-app.listen(PORT, function () {
-    console.log('Example app listening on port 3000!')
-})
+module.exports = app;
