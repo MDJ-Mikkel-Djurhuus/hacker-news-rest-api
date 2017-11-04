@@ -2,10 +2,10 @@ const express = require('express');
 const cors = require('cors');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
-
-const index = require('./routes/index');
-const post = require('./routes/post');
-const user = require('./routes/user');
+const path = require("path");
+const index = require(path.join(__dirname, "routes", "index.js"));
+const post = require(path.join(__dirname, "routes", "post.js"));
+const user = require(path.join(__dirname, "routes", "user.js"));
 
 const app = express();
 
@@ -17,7 +17,8 @@ app.use('/', index);
 app.use('/post', post);
 app.use('/user', user);
 
-app.listen(3000, function () {
+app.listen(8081, function() {
+    console.log("listening on 8081")
 })
 
 module.exports = app;
